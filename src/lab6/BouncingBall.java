@@ -15,8 +15,7 @@ public class BouncingBall implements Runnable {
     private Field field;
     private int radius;
     private Color color;
-                                    // Флаг супер или нет
-    private boolean superflag=false;
+                                   
 
                                     // Текущие координаты мяча
     private double x;
@@ -79,7 +78,7 @@ public class BouncingBall implements Runnable {
         this.speedY = speedY;
     }
 
-    public boolean isSuperflag() { return superflag; }
+   
 
     public double getSpeedX() {
         return speedX;
@@ -98,13 +97,8 @@ public class BouncingBall implements Runnable {
     public int getRadius(){ return radius; }
 
 
-                                    // Делает мячик суперсильным
-    public BouncingBall superball()
-    {
-        superflag=true;
-        radius*=2;
-        return this;
-    }
+                                    
+   
 
                                     // Метод run() исполняется внутри потока. Когда он завершает работу,
                                     // то завершается и поток
@@ -120,7 +114,61 @@ public class BouncingBall implements Runnable {
                 field.canMove(this);
 
                                                 // проверка на столкновение с кирпичиками
-                
+                for(int i=0;i<field.getArrayH();i++)
+                    for(int j=0;j<field.getArrayW();j++)
+                    {
+                        if(field.getArray_kirp()[i][j]!=null) {
+                            if ((y + speedY >= field.getArray_kirp()[i][j].getY()) && (y + speedY <= field.getArray_kirp()[i][j].getWidth() + field.getArray_kirp()[i][j].getY()) && x + speedX >= field.getArray_kirp()[i][j].getX() + field.getArray_kirp()[i][j].getLength()) {
+                                if ((x + speedX <= field.getArray_kirp()[i][j].getX() + field.getArray_kirp()[i][j].getLength() + radius)) {
+                                                                    // Достигли левой плоскотси прямоугольника, отталкиваемся вправо
+                                    speedX = -speedX;
+                                    x = field.getArray_kirp()[i][j].getX() + field.getArray_kirp()[i][j].getLength() + radius;
+                                    
+                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                    if(field.getArray_kirp()[i][j].flagNow<=0) {
+                                        field.deletekirp(i, j);
+                                    }
+                                }
+                            }
+                            else if((y + speedY >= field.getArray_kirp()[i][j].getY()) && (y+ speedY <= field.getArray_kirp()[i][j].getWidth()+field.getArray_kirp()[i][j].getY()) && (x+speedX <= field.getArray_kirp()[i][j].getX())) {
+                                if ((x + speedX >= field.getArray_kirp()[i][j].getX() - radius)) {
+                                                                    // Достигли правой плоскотси прямоугольника, отскакиваемся влево
+                                    speedX = -speedX;
+                                    x = field.getArray_kirp()[i][j].getX() - radius;
+                                    
+                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                    if(field.getArray_kirp()[i][j].flagNow<=0) {
+                                        field.deletekirp(i, j);
+                                    }
+                                }
+                            }
+                            else if((x+speedX >= field.getArray_kirp()[i][j].getX()) && (x+speedX <= field.getArray_kirp()[i][j].getLength()+field.getArray_kirp()[i][j].getX()) && (y+speedY <= field.getArray_kirp()[i][j].getY())) {
+                                if (y + speedY >= field.getArray_kirp()[i][j].getY() - radius) {
+                                                                    // Достигли верхней плоскотси прямоугольника, отскакиваемся вверх
+                                    speedY = -speedY;
+                                    y = field.getArray_kirp()[i][j].getY() - radius;
+                                    
+                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                    if(field.getArray_kirp()[i][j].flagNow<=0) {
+                                        field.deletekirp(i, j);
+                                    }
+                                }
+                            }
+                            else if((x+speedX >= field.getArray_kirp()[i][j].getX()) && (x+speedX <= field.getArray_kirp()[i][j].getLength()+field.getArray_kirp()[i][j].getX()) && (y+speedY >= field.getArray_kirp()[i][j].getY()+field.getArray_kirp()[i][j].getWidth())) {
+                                if ((y + speedY <= field.getArray_kirp()[i][j].getY() + field.getArray_kirp()[i][j].getWidth() + radius)) {
+                                                                    // Достигли нижней плоскотси прямоугольника, отскакиваемся вниз
+                                    speedY = -speedY;
+                                    y = field.getArray_kirp()[i][j].getY() + field.getArray_kirp()[i][j].getWidth() + radius;
+                                    
+                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                    if(field.getArray_kirp()[i][j].flagNow<=0) {
+                                        field.deletekirp(i, j);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                
 
                                                     // Проверка на столкновение со стенками
@@ -166,15 +214,12 @@ public class BouncingBall implements Runnable {
 
                                     // Метод прорисовки самого себя
     public void paint(Graphics2D canvas) {
-        if(!superflag) {
-            canvas.setColor(color);
-            canvas.setPaint(color);
-        }
-        else {
+       
+        
             canvas.setColor(color);
             canvas.setPaint(Color.RED);
 
-        }
+        
         Ellipse2D.Double ball = new Ellipse2D.Double(x-radius, y-radius, 2*radius, 2*radius);
         canvas.draw(ball);
         canvas.fill(ball);
