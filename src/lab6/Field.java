@@ -25,6 +25,8 @@ public class Field extends JPanel {
                                         // Размеры матрицы
     private static  int arrayH=450;
     private static  int arrayW=450;
+    
+    private Kirpichik[][] array_kirp= new Kirpichik[arrayH][arrayW];
 
     
 
@@ -47,6 +49,9 @@ public class Field extends JPanel {
     public static int getArrayW() {
         return arrayW;
     }
+    public Kirpichik[][] getArray_kirp() {
+        return array_kirp;
+    }
 
     
 
@@ -54,7 +59,13 @@ public class Field extends JPanel {
 
     public void setBalls(ArrayList<BouncingBall> balls) { this.balls = balls; }
 
-    
+    // удаляет кирпичик
+    public void deletekirp(int x,int y)
+    {
+    	array_kirp[x][y]=null;
+
+    }
+
 
 
                                         // Конструктор класса
@@ -92,6 +103,26 @@ public class Field extends JPanel {
         balls.add(new BouncingBall(this));
 
     }
+
+    // Метод добавления нового кирпичика в массив
+    public void addKirp() {
+    	while(true) {
+    		Kirpichik kirp = new Kirpichik(this);
+
+    		if (array_kirp[kirp.getX()][kirp.getY()] == null) {
+    			array_kirp[kirp.getX()][kirp.getY()] = kirp;
+    			break;
+    		}
+    	}
+    }
+    public void delKirpichiky()
+	{
+    	for(int i=0;i<arrayH;i++)
+    		for(int j=0;j<arrayW;j++)
+    			if(array_kirp[i][j]!=null)
+    				array_kirp[i][j]=null;
+	}
+
 
    
 
