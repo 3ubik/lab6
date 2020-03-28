@@ -124,7 +124,8 @@ public class BouncingBall implements Runnable {
                                     speedX = -speedX;
                                     x = field.getArray_kirp()[i][j].getX() + field.getArray_kirp()[i][j].getLength() + radius;
                                     
-                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                        field.getArray_kirp()[i][j].flagNow--;
+                                   
                                     if(field.getArray_kirp()[i][j].flagNow<=0) {
                                         field.deletekirp(i, j);
                                     }
@@ -136,7 +137,8 @@ public class BouncingBall implements Runnable {
                                     speedX = -speedX;
                                     x = field.getArray_kirp()[i][j].getX() - radius;
                                     
-                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                        field.getArray_kirp()[i][j].flagNow--;
+                                   
                                     if(field.getArray_kirp()[i][j].flagNow<=0) {
                                         field.deletekirp(i, j);
                                     }
@@ -148,7 +150,8 @@ public class BouncingBall implements Runnable {
                                     speedY = -speedY;
                                     y = field.getArray_kirp()[i][j].getY() - radius;
                                     
-                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                        field.getArray_kirp()[i][j].flagNow--;
+                                   
                                     if(field.getArray_kirp()[i][j].flagNow<=0) {
                                         field.deletekirp(i, j);
                                     }
@@ -160,7 +163,8 @@ public class BouncingBall implements Runnable {
                                     speedY = -speedY;
                                     y = field.getArray_kirp()[i][j].getY() + field.getArray_kirp()[i][j].getWidth() + radius;
                                     
-                                        field.getArray_kirp()[i][j].flagNow-= field.getArray_kirp()[i][j].getProchnost();
+                                        field.getArray_kirp()[i][j].flagNow--;
+                                    
                                     if(field.getArray_kirp()[i][j].flagNow<=0) {
                                         field.deletekirp(i, j);
                                     }
@@ -214,10 +218,10 @@ public class BouncingBall implements Runnable {
 
                                     // Метод прорисовки самого себя
     public void paint(Graphics2D canvas) {
-       
         
             canvas.setColor(color);
-            canvas.setPaint(Color.RED);
+            canvas.setPaint(color);
+        
 
         
         Ellipse2D.Double ball = new Ellipse2D.Double(x-radius, y-radius, 2*radius, 2*radius);
